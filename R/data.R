@@ -1,0 +1,56 @@
+#'
+#' Data for TCGA-AJ-A3EJ-01A-11D-A19X-01 sample from TCGA-UCEC study
+#'
+#' A dataset containing RCN data for the TCGA-AJ-A3EJ-01A-11D-A19X-01 sample
+#'
+#' @docType data
+#'
+#' @usage data(sample_data)
+#'
+#' @format A data frame with 646 rows and 6 variables:
+#' \describe{
+#'   \item{Sample}{sample name}
+#'   \item{Chromosome}{chromosome, 1:24}
+#'   \item{Start}{start position of segment}
+#'   \item{End}{end position of segment}
+#'   \item{Num_Probes}{number of probes}
+#'   \item{Segment_Mean}{log2 of the relative copy number}
+#' }
+#' @source \url{https://gdac.broadinstitute.org}
+#'
+#' @examples
+#' \dontrun{
+#' data(sample_data)
+#' sa = sample_data
+#' sample_name = sa$Sample[1]
+#' r = 2^sa$Segment_Mean
+#' w = sa$End - sa$Start # should be +1
+#' #
+#' # RCN profile plot
+#' plot_profile(sa, r, paste0(sample_name, '_RCN.tiff'),
+#'              ylim = c(0,5), ylab = 'RCN')
+#'
+#' # ACN profile for CNH
+#' grid = make_grid(purity = seq(0.2, 1, 0.01), ploidy = seq(1.5, 5, 0.01))
+#' cnh = find_cnhplus(grid, r = r, w = w, k=2, plus = F)
+#' # cnh
+#' #  purity ploidy     kappa
+#' #1   0.24   2.87 0.1384375
+#' #2   0.27   3.86 0.1387208
+#' #
+#' acn_cnh = r2q(r, cnh$purity[1], cnh$ploidy[1])
+#' plot_profile(sa, acn_cnh, paste0(sample_name, '_ACN_for_CNH.tiff'),
+#'             ylim = c(-10,10), ylab = 'ACN for CNH')
+#'
+#' # ACN profile for CNH+
+#' cnh_plus = find_cnhplus(grid, r = r, w = w, k=2, plus = T)
+#' cnh_plus
+#' #  purity ploidy     kappa
+#' #1      1   4.98 0.1647427
+#' #2      1   4.97 0.1648025
+#'
+#' acn_cnhplus = r2q(r, cnh_plus$purity[1], cnh_plus$ploidy[1])
+#' plot_profile(sa, acn_cnhplus, paste0(sample_name, '_ACN_for_CNHplus.tiff'),
+#'             ylim = c(0,10), ylab = 'ACN for CNH+')
+#' }
+"sample_data"

@@ -1,0 +1,29 @@
+Package: CNHplus
+Title: Copy Number Heterogeneity with the Non-negativity Constraint Imposed on the Absolute Copy Number Profile of Tumor
+Version: 0.1.0
+Author: Marian Grendar
+Maintainer: Marian Grendar  <marian.grendar@uniba.sk>
+Description: Finds the tumor purity and the tumor ploidy for which Copy Number Heterogeneity is minimal by searching over grid, while imposing the non-negativity constraint on the recovered absolute copy number profile.
+License: GPL (>= 2)
+Depends: R (>= 3.5.0)
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+Suggests: knitr, rmarkdown
+URL: https://github.com/grendar/CNHplus
+Imports: 
+    Rdpack,
+    dplyr,
+    grid,
+    gtrellis,
+    progress,
+    survival,
+    survminer,
+    ggplot2,
+    openxlsx,
+    TCGAbiolinks,
+    stringi,
+    checkmate
+RdMacros:
+    Rdpack
+RoxygenNote: 7.2.1
