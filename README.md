@@ -41,7 +41,7 @@ plot_profile(sa, r, paste0(sample_name, '_RCN.tiff'),
 grid = make_grid(purity = seq(0.2, 1, 0.01), ploidy = seq(1.5, 5, 0.01))
 #
 # finding CNHplus by searching over the grid
-cnh = find_cnhplus(grid, r = r, w = w, k=1, plus = T)
+cnh = find_cnhplus(grid, r = r, w = w, k = 1, plus = T)
 #
 # computing the Absolute Copy Number profile of tumor recovered by CNH+
 acn_cnh = r2q(r, cnh$purity[1], cnh$ploidy[1])
@@ -57,7 +57,7 @@ plot_profile(sa, acn_cnh, paste0(sample_name, '_ACN_for_CNH.tiff'),
 
 Additional examples illustrating how to
 
--   compute CNHplus for TCGA studies
--   use CNHplus to stratify TCGA cancer patients for survival
+-   compute CNH+ for TCGA studies
+-   use CNH+ to stratify TCGA cancer patients for survival
 
 can be found in the vignette.
