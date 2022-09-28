@@ -68,7 +68,7 @@
 #' # survival analysis (below/above median CNH+)
 #' gg_cnhplus = plot_survival(study_name,
 #'                            vDx$OS, vDx$OS_event,
-#'                            res$cnh_plus[im_vDx_survival],
+#'                            res$cnh_plus[im_vDx_res],
 #'                            type = 'unfiltered CNH+', ylim = c(0, 1))
 #' gg_cnhplus
 #' }
