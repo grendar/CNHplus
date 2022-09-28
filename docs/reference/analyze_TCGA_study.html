@@ -88,15 +88,15 @@ CNH+ and associated tumor purity, tumor ploidy. Option to find both CNH+ and CNH
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Example shows how to
-1) download RCN profiles for samples from a TCGA study and store them to /tmp on unix;
-2) read them into R;
-3) read in a Supplementary file from van Dijk et al. which contains sample names
-   of the TCGA tumor samples that were analyzed by the authors;
-4) select from the downloaded TCGA RCN data only those samples that were analyzed
+1) download RCN profiles for samples from a TCGA study;
+2) read in a Supplementary file from van Dijk et al. which contains sample names
+   of the TCGA tumor samples that were analyzed by the authors, as well as other data
+   (CNH, survival data);
+3) select from the downloaded TCGA RCN data only those samples that were analyzed
    by van Dijk et al.;
-5) make grid of purities, ploidies over which the CNH+ solution will be searched for;
-6) analyze the TCGA study - for each samples find CNH+ and associated purity, ploidy pair
-7) compare survival curves of subjects with CNH+ below/above median and make KM plot</p>
+4) make grid of purities, ploidies over which the CNH+ solution will be searched for;
+5) analyze the TCGA study - for each samples find CNH+ and associated purity, ploidy pair
+6) compare survival curves of subjects with CNH+ below/above median and make KM plot</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -125,7 +125,7 @@ CNH+ and associated tumor purity, tumor ploidy. Option to find both CNH+ and CNH
 <span class="r-in"><span>                               sample.type <span class="op">=</span> <span class="st">'Primary Tumor'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># download segmented_scna_hg19 data</span></span></span>
 <span class="r-in"><span><span class="fu">TCGAbiolinks</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TCGAbiolinks/man/GDCdownload.html" class="external-link">GDCdownload</a></span><span class="op">(</span>query <span class="op">=</span> <span class="va">query</span>,</span></span>
-<span class="r-in"><span>                         method <span class="op">=</span> <span class="st">'client'</span><span class="op">)</span> <span class="co"># "api", files.per.chunk = 10)</span></span></span>
+<span class="r-in"><span>                          method <span class="op">=</span> <span class="st">"api"</span>, files.per.chunk <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="co"># client')</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">TCGAbiolinks</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/TCGAbiolinks/man/GDCprepare.html" class="external-link">GDCprepare</a></span><span class="op">(</span>query <span class="op">=</span> <span class="va">query</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">da</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
@@ -147,9 +147,14 @@ CNH+ and associated tumor purity, tumor ploidy. Option to find both CNH+ and CNH
 <span class="r-in"><span><span class="co"># analyze TCGA study</span></span></span>
 <span class="r-in"><span><span class="va">oo</span> <span class="op">=</span> <span class="fu">analyze_TCGA_study</span><span class="op">(</span><span class="va">study_name</span>, <span class="va">da_vD</span>, <span class="va">grid</span>, k<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># survival analysis (below/above median CNH+)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">study_name</span>, <span class="st">'_results.csv'</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">gg_cnhplus</span> <span class="op">=</span> <span class="fu"><a href="plot_survival.html">plot_survival</a></span><span class="op">(</span><span class="va">study_name</span>, <span class="va">vDx</span><span class="op">$</span><span class="va">OS</span>, <span class="va">vDx</span><span class="op">$</span><span class="va">OS_event</span>, <span class="va">res</span><span class="op">$</span><span class="va">cnh_plus</span>,</span></span>
+<span class="r-in"><span><span class="co"># match samples from results file and the survival data in vDx</span></span></span>
+<span class="r-in"><span><span class="va">im_vDx_res</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">vDx</span><span class="op">$</span><span class="va">Samplename</span>, <span class="va">res</span><span class="op">$</span><span class="va">sample</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co"># survival analysis (below/above median CNH+)</span></span></span>
+<span class="r-in"><span><span class="va">gg_cnhplus</span> <span class="op">=</span> <span class="fu"><a href="plot_survival.html">plot_survival</a></span><span class="op">(</span><span class="va">study_name</span>,</span></span>
+<span class="r-in"><span>                           <span class="va">vDx</span><span class="op">$</span><span class="va">OS</span>, <span class="va">vDx</span><span class="op">$</span><span class="va">OS_event</span>,</span></span>
+<span class="r-in"><span>                           <span class="va">res</span><span class="op">$</span><span class="va">cnh_plus</span><span class="op">[</span><span class="va">im_vDx_survival</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>                           type <span class="op">=</span> <span class="st">'unfiltered CNH+'</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">gg_cnhplus</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>

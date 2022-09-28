@@ -46,7 +46,6 @@ library('TCGAbiolinks')
 library('stringi')
 library('openxlsx')
 library('dplyr')
-library('memoise')
 ```
 
 
@@ -82,7 +81,7 @@ w = sa$End - sa$Start # should be +1
 
 `plot_profile` function then plots the RCN profile of the sample and saves it to a tiff file with file name specified by `sample_name`.
 
-```{r, fig.width=7, fig.height=4, include=T, fig.align='center', fig.show='hold', results=FALSE}
+```{r, fig.width=8, fig.height=4, include=T, fig.align='center', fig.show='hold', results=FALSE}
 # RCN profile plot
 plot_profile(sa, r, paste0(sample_name, '_RCN.tiff'),
              ylim = c(0,5), ylab = 'RCN')
@@ -110,7 +109,7 @@ CNH estimates of the tumor purity, the tumor ploidy and the CNH value (i.e., kap
 
 ```{r}
 # ACN profile for CNH
-cnh = find_cnhplus(grid, r = r, w = w, k=2, plus = F)
+cnh = find_cnhplus(grid, r = r, w = w, k = 2, plus = F)
 cnh
 ```
 
@@ -122,7 +121,7 @@ acn_cnh = r2q(r, cnh$purity[1], cnh$ploidy[1])
 
 The ACN profile of tumor, recovered by CNH can be plotted by `plot_profile` function.
 
-```{r, fig.width=7, fig.height=4, include=T, fig.align='center', fig.show='hold', results=FALSE}
+```{r, fig.width=8, fig.height=4, include=T, fig.align='center', fig.show='hold', results=FALSE}
 plot_profile(sa, acn_cnh, paste0(sample_name, '_ACN_for_CNH.tiff'),
              ylim = c(-10,10), ylab = 'ACN for CNH')
 ```
@@ -133,7 +132,7 @@ The number of copies is negative in numerous segments.
 
 By default, `find_cnhplus` searches for the CNH+ solution.
 
-```{r, fig.width=7, fig.height=4, include=T, fig.align='center', fig.show='hold', results=FALSE}
+```{r, fig.width=8, fig.height=4, include=T, fig.align='center', fig.show='hold', results=FALSE}
 # ACN profile for CNH+
 cnh_plus = find_cnhplus(grid, r = r, w = w, k=2, plus = T)
 cnh_plus
@@ -204,10 +203,14 @@ The function invisibly saves csv file with the results; i.e., CNH+, purity, ploi
 Function `plot_survival` can be used for plotting the Kaplan-Meier survival functions for two groups of samples from TCGA study: those with CNH+ below or equal to the median vs. samples with CNH+ above median.
 
 ```{r, fig.width=7, fig.height=8.5, include=T, fig.align='center', fig.show='hold'}
-# KM for two groups; below/above median CNH+
+# read in the results file for the study
 res = read.csv(paste0(study_name, '_results.csv'))
-gg_cnhplus = plot_survival(study_name, vDx$OS, vDx$OS_event, res$cnh_plus,
-                            type = 'CNH+', ylim = c(0, 1))
+# match samples from results file and the survival data in vDx
+im_vDx_res = match(vDx$Samplename, res$sample)
+# KM for two groups; below/above median CNH+
+gg_cnhplus = plot_survival(study_name, vDx$OS, vDx$OS_event, 
+                           res$cnh_plus[im_vDx_res],
+                           type = 'CNH+', ylim = c(0, 1))
 gg_cnhplus
 ```
 

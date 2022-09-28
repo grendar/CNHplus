@@ -10,7 +10,8 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown
-URL: https://github.com/grendar/CNHplus
+URL: https://github.com/grendar/CNHplus,
+    https://grendar.github.io/CNHplus/
 Imports: 
     Rdpack,
     dplyr,

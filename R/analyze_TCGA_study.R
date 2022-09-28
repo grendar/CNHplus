@@ -13,7 +13,8 @@
 #' @details Example shows how to
 #' 1) download RCN profiles for samples from a TCGA study;
 #' 2) read in a Supplementary file from van Dijk et al. which contains sample names
-#'    of the TCGA tumor samples that were analyzed by the authors;
+#'    of the TCGA tumor samples that were analyzed by the authors, as well as other data
+#'    (CNH, survival data);
 #' 3) select from the downloaded TCGA RCN data only those samples that were analyzed
 #'    by van Dijk et al.;
 #' 4) make grid of purities, ploidies over which the CNH+ solution will be searched for;
@@ -60,9 +61,14 @@
 #' # analyze TCGA study
 #' oo = analyze_TCGA_study(study_name, da_vD, grid, k=2)
 #'
-#' # survival analysis (below/above median CNH+)
 #' res = read.csv(paste0(study_name, '_results.csv'))
-#' gg_cnhplus = plot_survival(study_name, vDx$OS, vDx$OS_event, res$cnh_plus,
+#' # match samples from results file and the survival data in vDx
+#' im_vDx_res = match(vDx$Samplename, res$sample)
+#' #
+#' # survival analysis (below/above median CNH+)
+#' gg_cnhplus = plot_survival(study_name,
+#'                            vDx$OS, vDx$OS_event,
+#'                            res$cnh_plus[im_vDx_survival],
 #'                            type = 'unfiltered CNH+', ylim = c(0, 1))
 #' gg_cnhplus
 #' }

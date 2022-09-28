@@ -10,7 +10,6 @@ library('TCGAbiolinks')
 library('stringi')
 library('openxlsx')
 library('dplyr')
-library('memoise')
 
 ## -----------------------------------------------------------------------------
 data(sample_data)
@@ -93,9 +92,13 @@ oo = analyze_TCGA_study(study_name, da_vD, grid, k=2)
 #
 
 ## ---- fig.width=7, fig.height=8.5, include=T, fig.align='center', fig.show='hold'----
-# KM for two groups; below/above median CNH+
+# read in the results file for the study
 res = read.csv(paste0(study_name, '_results.csv'))
-gg_cnhplus = plot_survival(study_name, vDx$OS, vDx$OS_event, res$cnh_plus,
-                            type = 'CNH+', ylim = c(0, 1))
+# match samples from results file and the survival data in vDx
+im_vDx_res = match(vDx$Samplename, res$sample)
+# KM for two groups; below/above median CNH+
+gg_cnhplus = plot_survival(study_name, vDx$OS, vDx$OS_event, 
+                           res$cnh_plus[im_vDx_res],
+                           type = 'CNH+', ylim = c(0, 1))
 gg_cnhplus
 
