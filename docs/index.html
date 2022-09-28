@@ -95,7 +95,7 @@
 <span><span class="va">grid</span> <span class="op">=</span> <span class="fu"><a href="reference/make_grid.html">make_grid</a></span><span class="op">(</span>purity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">1</span>, <span class="fl">0.01</span><span class="op">)</span>, ploidy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1.5</span>, <span class="fl">5</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># finding CNHplus by searching over the grid</span></span>
-<span><span class="va">cnh</span> <span class="op">=</span> <span class="fu"><a href="reference/find_cnhplus.html">find_cnhplus</a></span><span class="op">(</span><span class="va">grid</span>, r <span class="op">=</span> <span class="va">r</span>, w <span class="op">=</span> <span class="va">w</span>, k<span class="op">=</span><span class="fl">1</span>, plus <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">cnh</span> <span class="op">=</span> <span class="fu"><a href="reference/find_cnhplus.html">find_cnhplus</a></span><span class="op">(</span><span class="va">grid</span>, r <span class="op">=</span> <span class="va">r</span>, w <span class="op">=</span> <span class="va">w</span>, k <span class="op">=</span> <span class="fl">1</span>, plus <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># computing the Absolute Copy Number profile of tumor recovered by CNH+</span></span>
 <span><span class="va">acn_cnh</span> <span class="op">=</span> <span class="fu"><a href="reference/r2q.html">r2q</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">cnh</span><span class="op">$</span><span class="va">purity</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">cnh</span><span class="op">$</span><span class="va">ploidy</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
@@ -110,8 +110,8 @@
 </h2>
 <p>Additional examples illustrating how to</p>
 <ul>
-<li>compute CNHplus for TCGA studies</li>
-<li>use CNHplus to stratify TCGA cancer patients for survival</li>
+<li>compute CNH+ for TCGA studies</li>
+<li>use CNH+ to stratify TCGA cancer patients for survival</li>
 </ul>
 <p>can be found in the vignette.</p>
 </div>
