@@ -1,0 +1,10 @@
+pandoc: 2.14.2
+pkgdown: 2.0.6
+pkgdown_sha: ~
+articles:
+  CNHplus: CNHplus.html
+last_built: 2022-09-28T11:30Z
+urls:
+  reference: https://grendar.github.io/CNHplus/reference
+  article: https://grendar.github.io/CNHplus/articles
+
